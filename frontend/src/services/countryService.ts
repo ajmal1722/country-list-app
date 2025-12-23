@@ -8,7 +8,7 @@ const countriesClient = createHttpClient(
 export const getAllCountries = (): Promise<Country[]> => {
     return countriesClient.get<Country[]>("/all", {
         params: {
-            fields: "name,capital,flags,population"
+            fields: "name,capital,flags,population,region"
         }
     }) as unknown as Promise<Country[]>
 }

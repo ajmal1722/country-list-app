@@ -23,10 +23,10 @@ const CountryInfo = ({ country }: CountryInfoProps) => {
             {/* Content Section */}
             <div className="space-y-8">
                 <div>
-                    <h1 className="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+                    <h1 className="text-4xl font-semibold tracking-tight  sm:text-5xl">
                         {country.name.common}
                     </h1>
-                    <p className="mt-2 text-lg text-gray-500 font-medium">
+                    <p className="mt-2 text-lg text-muted font-medium">
                         {country.name.official}
                     </p>
                 </div>
@@ -82,10 +82,10 @@ const InfoItem = ({ icon, label, value }: { icon: React.ReactNode; label: string
     <div className="flex items-start gap-3">
         <div className="mt-1 flex-shrink-0 text-xl text-primary">{icon}</div>
         <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted">
                 {label}
             </p>
-            <p className="text-base font-medium text-gray-900">{value}</p>
+            <p className="text-base font-medium text-gray-500 ">{value}</p>
         </div>
     </div>
 );

@@ -45,12 +45,12 @@ const CountryFilters = ({
                     className="w-full border-b border-tertiary bg-transparent py-2 text-sm tracking-wide text-primary
                      focus:border-primary focus:outline-none"
                 >
-                    <option value="all">All Regions</option>
-                    <option value="Asia">Asia</option>
-                    <option value="Europe">Europe</option>
-                    <option value="Africa">Africa</option>
-                    <option value="Americas">Americas</option>
-                    <option value="Oceania">Oceania</option>
+                    <option value="all" className="dark:bg-base">All Regions</option>
+                    <option value="Asia" className="dark:bg-base">Asia</option>
+                    <option value="Europe" className="dark:bg-base">Europe</option>
+                    <option value="Africa" className="dark:bg-base">Africa</option>
+                    <option value="Americas" className="dark:bg-base">Americas</option>
+                    <option value="Oceania" className="dark:bg-base">Oceania</option>
                 </select>
             </div>
 
@@ -65,10 +65,10 @@ const CountryFilters = ({
                     className="w-full border-b border-tertiary bg-transparent py-2 text-sm tracking-wide text-primary
                      focus:border-primary focus:outline-none"
                 >
-                    <option value="all">All</option>
-                    <option value="lt10">&lt; 10M</option>
-                    <option value="10to50">10M – 50M</option>
-                    <option value="gt50">&gt; 50M</option>
+                    <option value="all" className="dark:bg-base">All</option>
+                    <option value="lt10" className="dark:bg-base">&lt; 10M</option>
+                    <option value="10to50" className="dark:bg-base">10M – 50M</option>
+                    <option value="gt50" className="dark:bg-base">&gt; 50M</option>
                 </select>
             </div>
 

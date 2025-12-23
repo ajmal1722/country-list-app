@@ -119,7 +119,7 @@ function CountryDetails() {
             <div className="mb-10">
                 <Link
                     to="/"
-                    className="group inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-primary"
+                    className="group inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-primary"
                 >
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 transition-colors group-hover:bg-primary/10 group-hover:text-primary">
                         <FiArrowLeft className="text-lg" />
@@ -128,7 +128,7 @@ function CountryDetails() {
                 </Link>
             </div>
 
-            <div className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-black/5">
+            <div className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-black/5 dark:bg-base dark:ring-white/10">
                 <div className="p-8 sm:p-12">
                     <CountryInfo country={country} />
                     <WeatherWidget

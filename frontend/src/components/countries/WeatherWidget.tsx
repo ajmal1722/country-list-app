@@ -39,8 +39,8 @@ const WeatherWidget = ({ weather, loading, error }: WeatherWidgetProps) => {
     };
 
     return (
-        <div className="mt-16 border-t border-gray-100 pt-10">
-            <h2 className="mb-6 text-2xl font-bold text-gray-900">
+        <div className="mt-16 border-t border-gray-100 pt-10 dark:border-tertiary">
+            <h2 className="mb-6 text-2xl font-bold text-gray-500">
                 Weather in {weather.name}
             </h2>
 
@@ -70,23 +70,23 @@ const WeatherWidget = ({ weather, loading, error }: WeatherWidgetProps) => {
 
                 {/* Details Cards */}
                 <div className="grid flex-1 grid-cols-2 gap-4">
-                    <div className="flex flex-col justify-center rounded-2xl bg-gray-50 p-6">
-                        <div className="flex items-center gap-2 text-gray-500 mb-2">
+                    <div className="flex flex-col justify-center rounded-2xl bg-gray-50 p-6 dark:bg-tertiary">
+                        <div className="flex items-center gap-2 text-muted mb-2">
                             <FiDroplet />
                             <span className="text-sm font-medium uppercase tracking-wider">Humidity</span>
                         </div>
-                        <p className="text-2xl font-bold text-gray-900">
+                        <p className="text-2xl font-bold text-gray-500">
                             {weather.main.humidity}%
                         </p>
                     </div>
 
-                    <div className="flex flex-col justify-center rounded-2xl bg-gray-50 p-6">
-                        <div className="flex items-center gap-2 text-gray-500 mb-2">
+                    <div className="flex flex-col justify-center rounded-2xl bg-gray-50 p-6 dark:bg-tertiary">
+                        <div className="flex items-center gap-2 text-muted mb-2">
                             <FiWind />
                             <span className="text-sm font-medium uppercase tracking-wider">Wind</span>
                         </div>
-                        <p className="text-2xl font-bold text-gray-900">
-                            {weather.wind.speed} <span className="text-sm font-normal text-gray-500">m/s</span>
+                        <p className="text-2xl font-bold text-gray-500">
+                            {weather.wind.speed} <span className="text-sm font-normal text-muted">m/s</span>
                         </p>
                     </div>
                 </div>

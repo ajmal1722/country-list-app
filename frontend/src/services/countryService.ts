@@ -14,5 +14,6 @@ export const getAllCountries = (): Promise<Country[]> => {
 }
 
 export const getCountryByName = (name: string): Promise<Country[]> => {
-    return countriesClient.get<Country[]>(`/name/${name}`) as unknown as Promise<Country[]>
+    const encodedName = encodeURI(name)
+    return countriesClient.get<Country[]>(`/name/${encodedName}?fullText=true`) as unknown as Promise<Country[]>
 }

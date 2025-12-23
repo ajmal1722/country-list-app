@@ -103,7 +103,11 @@ function CountryList() {
     }
 
     if (error) {
-        return <p style={{ color: "red" }}>{error}</p>
+        return (
+            <div className="flex h-[50vh] items-center justify-center">
+                <p className="text-red-500">{error}</p>
+            </div>
+        );
     }
 
     return (
@@ -123,20 +127,40 @@ function CountryList() {
                 setPopulation={handlePopulationChange}
             />
 
+            {/* Content */}
+            {paginatedCountries.length > 0 ? (
+                <>
+                    <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
+                        {paginatedCountries.map((country) => (
+                            <CountryCard key={country.name.common} country={country} />
+                        ))}
+                    </div>
 
-            {/* Country Grid */}
-            <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
-                {paginatedCountries.map((country) => (
-                    <CountryCard key={country.name.common} country={country} />
-                ))}
-            </div>
-
-            {/* Pagination */}
-            <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-            />
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                    />
+                </>
+            ) : (
+                <div className="flex flex-col items-center justify-center py-20 text-center">
+                    <div className="mb-4 text-4xl">🔍</div>
+                    <h3 className="text-xl font-semibold text-primary">No countries found</h3>
+                    <p className="mt-2 text-muted">
+                        Try adjusting your search or filters to find what you're looking for.
+                    </p>
+                    <button
+                        onClick={() => {
+                            setSearch("");
+                            setRegion("all");
+                            setPopulation("all");
+                        }}
+                        className="mt-6 text-sm font-medium text-primary underline hover:opacity-80"
+                    >
+                        Clear all filters
+                    </button>
+                </div>
+            )}
         </div>
     )
 }

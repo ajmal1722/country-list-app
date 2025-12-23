@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 :root {
   --color-primary: #1A1A1A;
   --color-secondary: #F2F2F2;
@@ -30,6 +31,9 @@
   --color-muted: var(--color-muted);
   --color-base: var(--color-bg-base);
 }
+
+/* Force class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Global Base Styles */
 body {

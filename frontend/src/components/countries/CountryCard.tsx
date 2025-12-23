@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { FiMapPin, FiUsers, FiHome } from "react-icons/fi";
 import type { Country } from "../../types/country";
+import { useFavorites } from "../../context/favoritesContext";
+import { FiHeart } from "react-icons/fi";
 
 interface CountryCardProps {
     country: Country;
@@ -15,6 +17,19 @@ const formatPopulation = (population?: number) => {
 
 const CountryCard = ({ country }: CountryCardProps) => {
     const navigate = useNavigate();
+    const { isFavorite, addFavorite, removeFavorite } = useFavorites();
+
+    const favorite = isFavorite(country.name.common)
+
+    const toggleFavorite = (
+        e: React.MouseEvent<HTMLButtonElement>
+    ) => {
+        e.stopPropagation()
+
+        favorite
+            ? removeFavorite(country.name.common)
+            : addFavorite(country)
+    }
 
     const handleClick = () => {
         navigate(`/country/${country.name.common}`);
@@ -25,8 +40,20 @@ const CountryCard = ({ country }: CountryCardProps) => {
             onClick={handleClick}
             role="button"
             aria-label={`View details for ${country.name.common}`}
-            className="group cursor-pointer"
+            className="group cursor-pointer relative overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 transition-all hover:shadow-md hover:ring-primary/20"
         >
+            {/* Favorite Button */}
+            <button
+                onClick={toggleFavorite}
+                className="absolute top-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-transform hover:scale-110 active:scale-95"
+                title={favorite ? "Remove from favorites" : "Add to favorites"}
+            >
+                <FiHeart
+                    className={`text-lg transition-colors ${favorite ? "fill-red-500 text-red-500" : "text-gray-400 hover:text-red-500"
+                        }`}
+                />
+            </button>
+
             {/* Flag */}
             <div className="aspect-[3/2] overflow-hidden bg-gray-100">
                 <img
@@ -38,23 +65,23 @@ const CountryCard = ({ country }: CountryCardProps) => {
             </div>
 
             {/* Content */}
-            <div className="mt-4 space-y-1.5">
+            <div className="p-4 space-y-3">
                 {/* Country Name */}
-                <h3 className="text-[15px] font-medium tracking-wide text-gray-900">
+                <h3 className="text-base font-semibold tracking-tight text-gray-900 line-clamp-1">
                     {country.name.common}
                 </h3>
 
                 {/* Capital */}
                 <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <FiHome className="text-[14px]" />
-                    <span>{country.capital?.[0] ?? "No capital"}</span>
+                    <FiHome className="text-[14px] shrink-0" />
+                    <span className="truncate">{country.capital?.[0] ?? "No capital"}</span>
                 </div>
 
                 {/* Meta */}
-                <div className="flex items-center gap-5 pt-1 text-xs tracking-wide text-gray-500">
+                <div className="flex items-center gap-4 pt-1 text-xs font-medium text-gray-500">
                     <div className="flex items-center gap-1.5">
                         <FiMapPin className="text-[13px]" />
-                        <span>{country.region}</span>
+                        <span className="truncate max-w-[80px]">{country.region}</span>
                     </div>
 
                     <div className="flex items-center gap-1.5">

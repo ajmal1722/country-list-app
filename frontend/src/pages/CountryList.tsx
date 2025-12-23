@@ -2,14 +2,44 @@ import { useEffect, useState, useMemo } from "react";
 import { getAllCountries } from "../services/countryService";
 import type { Country } from "../types/country";
 import Loading from "../components/shared/Loading";
+import { useDebounce } from "../hooks/useDebounce";
 
-const ITEMS_PER_PAGE = 10
+const ITEMS_PER_PAGE = 12
 
 function CountryList() {
     const [countries, setCountries] = useState<Country[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [currentPage, setCurrentPage] = useState(1)
+    const [search, setSearch] = useState("")
+    const [region, setRegion] = useState("all")
+    const [population, setPopulation] = useState("all");
+
+    const debouncedSearch = useDebounce(search, 500);
+
+    const filteredCountries = useMemo(() => {
+        return countries.filter((country) => {
+            // Search filter
+            const matchesSearch = country.name.common
+                .toLowerCase()
+                .includes(debouncedSearch.toLowerCase())
+
+            // Region filter
+            const matchesRegion =
+                region === "all" || country.region === region
+
+            // Population filter
+            const matchesPopulation =
+                population === "all" ||
+                (population === "lt10" && country.population < 10_000_000) ||
+                (population === "10to50" &&
+                    country.population >= 10_000_000 &&
+                    country.population <= 50_000_000) ||
+                (population === "gt50" && country.population > 50_000_000)
+
+            return matchesSearch && matchesRegion && matchesPopulation
+        })
+    }, [countries, debouncedSearch, region, population])
 
     useEffect(() => {
         let isMounted = true
@@ -45,11 +75,10 @@ function CountryList() {
      */
     const paginatedCountries = useMemo(() => {
         const start = (currentPage - 1) * ITEMS_PER_PAGE
-        const end = start + ITEMS_PER_PAGE
-        return countries.slice(start, end)
-    }, [countries, currentPage])
+        return filteredCountries.slice(start, start + ITEMS_PER_PAGE)
+    }, [filteredCountries, currentPage])
 
-    const totalPages = Math.ceil(countries.length / ITEMS_PER_PAGE)
+    const totalPages = Math.ceil(filteredCountries.length / ITEMS_PER_PAGE)
 
     if (loading) {
         return <Loading />
@@ -66,6 +95,47 @@ function CountryList() {
             <h2 className="mb-8 text-2xl font-semibold tracking-wide text-primary">
                 Countries
             </h2>
+
+            <div style={{ marginBottom: "1rem" }}>
+                <input
+                    type="text"
+                    placeholder="Search country..."
+                    value={search}
+                    onChange={(e) => {
+                        setSearch(e.target.value)
+                        setCurrentPage(1)
+                    }}
+                />
+
+                <select
+                    value={region}
+                    onChange={(e) => {
+                        setRegion(e.target.value)
+                        setCurrentPage(1)
+                    }}
+                >
+                    <option value="all">All Regions</option>
+                    <option value="Asia">Asia</option>
+                    <option value="Europe">Europe</option>
+                    <option value="Africa">Africa</option>
+                    <option value="Americas">Americas</option>
+                    <option value="Oceania">Oceania</option>
+                </select>
+
+                <select
+                    value={population}
+                    onChange={(e) => {
+                        setPopulation(e.target.value)
+                        setCurrentPage(1)
+                    }}
+                >
+                    <option value="all">All Population</option>
+                    <option value="lt10">&lt; 10M</option>
+                    <option value="10to50">10M – 50M</option>
+                    <option value="gt50">&gt; 50M</option>
+                </select>
+            </div>
+
 
             {/* Country Grid */}
             <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">

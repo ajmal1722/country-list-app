@@ -5,14 +5,14 @@ const countriesClient = createHttpClient(
     "https://restcountries.com/v3.1"
 )
 
-export const getAllCountries = () => {
+export const getAllCountries = (): Promise<Country[]> => {
     return countriesClient.get<Country[]>("/all", {
         params: {
             fields: "name,capital,flags,population"
         }
-    })
+    }) as unknown as Promise<Country[]>
 }
 
-export const getCountryByName = (name: string) => {
-    return countriesClient.get<Country[]>(`/name/${name}`)
+export const getCountryByName = (name: string): Promise<Country[]> => {
+    return countriesClient.get<Country[]>(`/name/${name}`) as unknown as Promise<Country[]>
 }

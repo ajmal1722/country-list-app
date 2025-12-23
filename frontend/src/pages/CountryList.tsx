@@ -3,6 +3,9 @@ import { getAllCountries } from "../services/countryService";
 import type { Country } from "../types/country";
 import Loading from "../components/shared/Loading";
 import { useDebounce } from "../hooks/useDebounce";
+import CountryCard from "../components/countries/CountryCard";
+import CountryFilters from "../components/countries/CountryFilters";
+import Pagination from "../components/shared/Pagination";
 
 const ITEMS_PER_PAGE = 12
 
@@ -80,6 +83,21 @@ function CountryList() {
 
     const totalPages = Math.ceil(filteredCountries.length / ITEMS_PER_PAGE)
 
+    const handleSearchChange = (value: string) => {
+        setSearch(value);
+        setCurrentPage(1);
+    };
+
+    const handleRegionChange = (value: string) => {
+        setRegion(value);
+        setCurrentPage(1);
+    };
+
+    const handlePopulationChange = (value: string) => {
+        setPopulation(value);
+        setCurrentPage(1);
+    };
+
     if (loading) {
         return <Loading />
     }
@@ -96,100 +114,29 @@ function CountryList() {
                 Countries
             </h2>
 
-            <div style={{ marginBottom: "1rem" }}>
-                <input
-                    type="text"
-                    placeholder="Search country..."
-                    value={search}
-                    onChange={(e) => {
-                        setSearch(e.target.value)
-                        setCurrentPage(1)
-                    }}
-                />
-
-                <select
-                    value={region}
-                    onChange={(e) => {
-                        setRegion(e.target.value)
-                        setCurrentPage(1)
-                    }}
-                >
-                    <option value="all">All Regions</option>
-                    <option value="Asia">Asia</option>
-                    <option value="Europe">Europe</option>
-                    <option value="Africa">Africa</option>
-                    <option value="Americas">Americas</option>
-                    <option value="Oceania">Oceania</option>
-                </select>
-
-                <select
-                    value={population}
-                    onChange={(e) => {
-                        setPopulation(e.target.value)
-                        setCurrentPage(1)
-                    }}
-                >
-                    <option value="all">All Population</option>
-                    <option value="lt10">&lt; 10M</option>
-                    <option value="10to50">10M – 50M</option>
-                    <option value="gt50">&gt; 50M</option>
-                </select>
-            </div>
+            <CountryFilters
+                search={search}
+                setSearch={handleSearchChange}
+                region={region}
+                setRegion={handleRegionChange}
+                population={population}
+                setPopulation={handlePopulationChange}
+            />
 
 
             {/* Country Grid */}
             <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
                 {paginatedCountries.map((country) => (
-                    <div
-                        key={country.name.common}
-                        className="group cursor-pointer"
-                    >
-                        {/* Flag */}
-                        <div className="aspect-3/2 overflow-hidden bg-secondary">
-                            <img
-                                src={country.flags?.svg || country.flags?.png}
-                                alt={country.name.common}
-                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                loading="lazy"
-                            />
-                        </div>
-
-                        {/* Info */}
-                        <div className="mt-4">
-                            <h3 className="text-lg font-medium tracking-wide text-primary">
-                                {country.name.common}
-                            </h3>
-
-                            <p className="mt-1 text-sm text-muted">
-                                {country.capital?.[0] ?? "No capital"}
-                            </p>
-                        </div>
-                    </div>
+                    <CountryCard key={country.name.common} country={country} />
                 ))}
             </div>
 
             {/* Pagination */}
-            <div className="mt-14 flex items-center justify-center gap-6 text-sm">
-                <button
-                    onClick={() => setCurrentPage((p) => p - 1)}
-                    disabled={currentPage === 1}
-                    className="text-muted transition disabled:opacity-40 hover:text-primary"
-                >
-                    Previous
-                </button>
-
-                <span className="tracking-wide text-primary">
-                    Page {currentPage} of {totalPages}
-                </span>
-
-                <button
-                    onClick={() => setCurrentPage((p) => p + 1)}
-                    disabled={currentPage === totalPages}
-                    className="text-muted transition disabled:opacity-40 hover:text-primary"
-                >
-                    Next
-                </button>
-            </div>
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+            />
         </div>
     )
 }

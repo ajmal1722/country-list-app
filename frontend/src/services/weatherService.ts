@@ -11,12 +11,12 @@ const weatherClient = createHttpClient(
     "https://api.openweathermap.org/data/2.5"
 )
 
-export const getWeatherByCity = (city: string) => {
+export const getWeatherByCity = (city: string): Promise<WeatherResponse> => {
     return weatherClient.get<WeatherResponse>("/weather", {
         params: {
             q: city,
             appid: API_KEY,
             units: "metric",
         },
-    })
+    }) as unknown as Promise<WeatherResponse>
 }

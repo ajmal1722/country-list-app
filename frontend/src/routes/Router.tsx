@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 import HomeLayout from "../layouts/HomeLayout";
-import Loading from "../components/Loading";
+import Loading from "../components/shared/Loading";
 
 // Route-level code splitting
 const CountryList = lazy(() => import("../pages/CountryList"));

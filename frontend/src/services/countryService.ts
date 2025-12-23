@@ -2,13 +2,17 @@ import { createHttpClient } from "./createHttpClient";
 import type { Country } from "../types/country";
 
 const countriesClient = createHttpClient(
-  "https://restcountries.com/v3.1"
+    "https://restcountries.com/v3.1"
 )
 
 export const getAllCountries = () => {
-  return countriesClient.get<Country[]>("/all")
+    return countriesClient.get<Country[]>("/all", {
+        params: {
+            fields: "name,capital,flag,population"
+        }
+    })
 }
 
 export const getCountryByName = (name: string) => {
-  return countriesClient.get<Country[]>(`/name/${name}`)
+    return countriesClient.get<Country[]>(`/name/${name}`)
 }
